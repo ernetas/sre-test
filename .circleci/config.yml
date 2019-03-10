@@ -1,0 +1,27 @@
+version: 2
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - master
+      - deploy:
+          context: aws
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+
+jobs:
+  test:
+    docker:
+      - image: circleci/golang:latest
+    working_directory: ~/code/
+    steps:
+      - checkout
+      - run: make test

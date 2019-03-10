@@ -51,9 +51,9 @@ func writeBirthday(username, date string, w http.ResponseWriter) {
 
   _, err = svc.UpdateItem(input)
   if err != nil {
-    log.Printf("Got error calling PutItem: ", err.Error())
+    log.Print("Got error calling PutItem: ", err.Error())
     w.WriteHeader(http.StatusInternalServerError)
-    fmt.Fprintf(w, "Got error calling PutItem: ", err.Error())
+    fmt.Fprint(w, "Got error calling PutItem: ", err.Error())
   } else {
     // Give HTTP 204 status code on success
     w.WriteHeader(http.StatusNoContent)

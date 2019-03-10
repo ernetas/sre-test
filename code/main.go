@@ -28,7 +28,7 @@ func handlePut(username string, r *http.Request, w http.ResponseWriter) {
   if err != nil {
     w.WriteHeader(http.StatusBadRequest)
     fmt.Fprintln(w, "Failed to decode JSON, make sure it follows documented format.")
-    log.Printf("Failed to decode JSON: ", string(b), err)
+    log.Print("Failed to decode JSON: ", string(b), err)
     return
   }
   // Decode JSON
@@ -38,7 +38,7 @@ func handlePut(username string, r *http.Request, w http.ResponseWriter) {
     // Give HTTP status code 400 on bad JSON data
     w.WriteHeader(http.StatusBadRequest)
     fmt.Fprintln(w, "Failed to decode JSON, make sure it follows documented format.")
-    log.Printf("Failed to decode JSON: ", string(b), err)
+    log.Print("Failed to decode JSON: ", string(b), err)
   } else {
     date := data.DateOfBirth
     if validDate(date) {
@@ -48,7 +48,7 @@ func handlePut(username string, r *http.Request, w http.ResponseWriter) {
       todayDate := time.Now().UTC().Format("2006-01-02 UTC")
       // Let's print today's date for clarity, as UTC time may be different from client. (assuming that user can be born yesterday and that server time is in sync with NTP or whatnot...)
       fmt.Fprintln(w, "Invalid date. Must follow format YYYY-MM-DD and be no later than today: ", todayDate)
-      log.Printf("Invalid date. Must follow format YYYY-MM-DD and be no later than today: ", todayDate)
+      log.Print("Invalid date. Must follow format YYYY-MM-DD and be no later than today: ", todayDate)
     }
   }
 }
@@ -73,7 +73,7 @@ func main() {
           // Log undefined methods and give HTTP 501 status code
           w.WriteHeader(http.StatusNotImplemented)
           fmt.Fprintln(w, "Unsupported HTTP method. Only GET and PUT are supported.")
-          log.Printf("Call to unsupported HTTP method: ", r.Method)
+          log.Print("Call to unsupported HTTP method: ", r.Method)
       }
     } else {
       // Log bad usernames (we don't log non /hello paths to reduce unnecessary log footprint - assuming "/hello" as an "obscure" authentication)
